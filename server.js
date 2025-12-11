@@ -21,20 +21,22 @@ const io = new Server(server, {
     }
 });
 
-// Main socket connection
+// ✔ Render requires this
+const PORT = process.env.PORT || 5000;
+
+server.listen(PORT, () => {
+    console.log("Server running on port", PORT);
+});
+
+// SOCKET CONNECTION
 io.on("connection", (socket) => {
     console.log("New user connected:", socket.id);
 
     socket.on("sendMessage", (data) => {
-        io.emit("receiveMessage", data); // send to everyone
+        io.emit("receiveMessage", data);
     });
 
     socket.on("disconnect", () => {
         console.log("User disconnected:", socket.id);
     });
-});
-
-const PORT = 5000;
-server.listen(PORT, () => {
-    console.log("Backend running on port " + PORT);
 });
